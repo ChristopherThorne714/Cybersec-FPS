@@ -1,8 +1,13 @@
 import math
+import sys
+import pygame as pg
 
+pg.font.init()
 RES = WIDTH, HEIGHT = 1600, 900
 HALF_WIDTH = WIDTH // 2
 HALF_HEIGHT = HEIGHT // 2
+THIRD_WIDTH = WIDTH // 3
+THIRD_HEIGHT = HEIGHT // 3
 FPS = 60
 
 PLAYER_POS = 1.5, 5 #MINI_MAP
@@ -30,3 +35,11 @@ SCALE = WIDTH // NUM_RAYS
 
 TEXTURE_SIZE = 256
 HALF_TEXTURE_SIZE = TEXTURE_SIZE // 2
+
+#The following is font information for in game text and menus
+FONT = pg.font.SysFont("arialblack", 24)
+global text_color
+text_color = (255, 255, 255)
+
+#Game state booleans
+paused = False
