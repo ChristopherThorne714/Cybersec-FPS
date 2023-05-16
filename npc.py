@@ -88,7 +88,6 @@ class NPC(AnimatedSprite):
     #     some_nonsense = some_nonsense
         
                 
-    
     def run_logic(self):
         if self.alive:
             self.ray_cast_value = self.ray_cast_player_npc()

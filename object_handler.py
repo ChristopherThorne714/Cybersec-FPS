@@ -37,6 +37,7 @@ class ObjectHandler:
                 while (pos in self.game.map.world_map) or (pos in self.restricted_area):
                     pos = x, y = randrange(self.game.map.cols), randrange(self.game.map.rows)
                 self.add_npc(npc(self.game, pos=(x + 0.5, y + 0.5)))
+                self.add_sprite(SpriteObject(self.game, pos=(x + 0.5, y + 0.5)))
         
     def update(self):
         self.npc_positions = {npc.map_pos for npc in self.npc_list if npc.alive}
