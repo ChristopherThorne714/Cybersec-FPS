@@ -8,6 +8,9 @@ from object_renderer import *
 from sprite_object import *
 from object_handler import *
 from pause import *
+from weapon import * 
+from sound import *
+from pathfinding import *
 
 class Game:
     def __init__(self):
@@ -16,6 +19,9 @@ class Game:
         self.screen = pg.display.set_mode(RES)
         self.clock = pg.time.Clock()
         self.delta_time = 1
+        self.global_trigger = False
+        self.global_event = pg.USEREVENT + 0
+        pg.time.set_timer(self.global_event, 40)
         self.new_game()
         FONT = pg.font.SysFont("arialblack", 24)
 
@@ -25,6 +31,9 @@ class Game:
         self.object_renderer = ObjectRenderer(self)
         self.raycasting = Raycasting(self)
         self.object_handler = ObjectHandler(self)
+        self.weapon = Weapon(self)
+        self.sound = Sound(self)
+        self.pathfinding = PathFinding(self)
         #self.static_sprite = SpriteObject(self)
         #self.animated_sprite = AnimatedSprite(self)
 
@@ -32,6 +41,7 @@ class Game:
         self.player.update()
         self.raycasting.update()
         self.object_handler.update()
+        self.weapon.update()
         #self.static_sprite.update()
         #self.animated_sprite.update()
         pg.display.flip()
@@ -41,12 +51,14 @@ class Game:
     def draw(self):
         #self.screen.fill('black')
         self.object_renderer.draw()
+        self.weapon.draw()
         # self.map.draw()
         # self.player.draw()
 
 #The following function will handle the "paused" game state.
     def check_events(self):
         paused = False
+        self.global_trigger = False
         for event in pg.event.get():
             if event.type == pg.KEYDOWN:
                 if event.key == pg.K_ESCAPE:
@@ -54,6 +66,9 @@ class Game:
             if event.type == pg.QUIT:
                 pg.quit()
                 sys.exit()
+            elif event.type == self.global_event:
+                self.global_trigger = True
+            self.player.single_fire_event(event)
 
     def run(self):
         while True:
