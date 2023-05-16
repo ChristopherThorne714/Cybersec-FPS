@@ -9,6 +9,7 @@ class Player:
         self.angle = PLAYER_ANGLE
         self.shot = False
         self.health = PLAYER_MAX_HEALTH
+        self.rel = 0
     
     def check_game_over(self):
         if self.health < 1:
@@ -39,18 +40,24 @@ class Player:
         speed_cos = speed * cos_a
 
         keys = pg.key.get_pressed()
+        num_key_pressed = -1
         if keys[pg.K_w]:
+            num_key_pressed += 1
             dx += speed_cos
             dy += speed_sin
         if keys[pg.K_s]:
+            num_key_pressed += 1
             dx += -speed_cos
             dy += -speed_sin
         if keys[pg.K_a]:
+            num_key_pressed += 1
             dx += speed_sin
             dy += -speed_cos
         if keys[pg.K_d]:
+            num_key_pressed += 1
             dx += -speed_sin
             dy += speed_cos
+
 
         self.check_wall_collision(dx, dy)
 
@@ -58,7 +65,7 @@ class Player:
         #    self.angle -= PLAYER_ROT_SPEED * self.game.delta_time
         #if keys[pg.K_RIGHT]:
         #    self.angle += PLAYER_ROT_SPEED * self.game.delta_time
-        #self.angle %= math.tau
+        self.angle %= math.tau
 
     def check_wall(self, x, y):
         return (x, y) not in self.game.map.world_map
