@@ -11,6 +11,7 @@ from pause import *
 from weapon import * 
 from sound import *
 from pathfinding import *
+from npc import *
 
 class Game:
     def __init__(self):
@@ -34,6 +35,7 @@ class Game:
         self.weapon = Weapon(self)
         self.sound = Sound(self)
         self.pathfinding = PathFinding(self)
+        self.npc = NPC(self)
         #self.static_sprite = SpriteObject(self)
         #self.animated_sprite = AnimatedSprite(self)
 
@@ -42,6 +44,7 @@ class Game:
         self.raycasting.update()
         self.object_handler.update()
         self.weapon.update()
+        # self.npc.check_address()
         #self.static_sprite.update()
         #self.animated_sprite.update()
         pg.display.flip()
@@ -52,6 +55,7 @@ class Game:
         #self.screen.fill('black')
         self.object_renderer.draw()
         self.weapon.draw()
+        
         # self.map.draw()
         # self.player.draw()
 
@@ -76,7 +80,9 @@ class Game:
             self.check_events()
             self.update()
             self.draw()
+            #print(type(self.object_handler.npc_positions))
 
 if __name__ == '__main__':
     game = Game()
     game.run()
+
