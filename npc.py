@@ -10,9 +10,9 @@ class NPC(AnimatedSprite):
         self.pain_images = self.get_images(self.path + '/pain')
         self.walk_images = self.get_images(self.path + '/walk')
         # self.friend_ip_images = self.get_images(self.path + '/friend_ip')
-        # self.enemy_ip_images = self.get_images(self.path + '/enemy_ip')
+        self.enemy_ip_images = self.get_images(self.path + '/enemy_ip')
 
-        
+        self.screen = game.screen
         self.attack_dist = randint(3,6)
         self.speed = 0.03
         self.size = 10
@@ -24,6 +24,7 @@ class NPC(AnimatedSprite):
         self.ray_cast_value = False
         self.frame_counter = 0
         self.player_search_trigger = False
+        self.address_type = 1
         
     def update(self):
         self.check_animation_time()
@@ -61,7 +62,7 @@ class NPC(AnimatedSprite):
             if self.game.global_trigger and self.frame_counter < len(self.death_images) - 1:
                 self.death_images.rotate(-1)
                 self.image = self.death_images[0]
-                print('frame #' + str(self.frame_counter))
+                #print('frame #' + str(self.frame_counter))
                 self.frame_counter += 1
     
     def animate_pain(self):
@@ -83,12 +84,24 @@ class NPC(AnimatedSprite):
             self.alive = False
             print(self.alive)
             self.game.sound.npc_death.play()
+            
+    # may have to scrap checking and rendering ip address textures above enemy heads; not enough time
+    def check_address(self):
+        if self.address_type == 1:
+            self.draw_address(1)
+        elif self.address_type == 2:
+            self.draw_address(2)
+        else:
+            return
     
-    # def draw_ip(self):
-    #     some_nonsense = some_nonsense
+    def draw_address(self, z):
+        #for i in self.game.object_handler.npc_pos:
+            # print(self.map_pos)
+        if z == 2:
+            self.image = self.enemy_ip_images[0]
+        self.screen.blit(self.image, self.game.object_handler.npc_pos)
         
                 
-    
     def run_logic(self):
         if self.alive:
             self.ray_cast_value = self.ray_cast_player_npc()
@@ -201,3 +214,4 @@ class FriendlyNPC(NPC):
         self.health = 100
         self.attack_damage = 10
         self.accuracy = 0
+        self.address_type = 2

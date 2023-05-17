@@ -12,9 +12,10 @@ class ObjectHandler:
         add_sprite = self.add_sprite
         add_npc = self.add_npc
         self.npc_positions = {}
+        self.npc_pos = ()
         
         # spawn npc
-        self.enemies = 3  # npc count
+        self.enemies = 5  # npc count
         self.npc_types = [SoldierNPC, FriendlyNPC]
         self.weights = [50, 50]
         self.restricted_area = {(i, j) for i in range(10) for j in range(10)}
@@ -37,9 +38,11 @@ class ObjectHandler:
                 while (pos in self.game.map.world_map) or (pos in self.restricted_area):
                     pos = x, y = randrange(self.game.map.cols), randrange(self.game.map.rows)
                 self.add_npc(npc(self.game, pos=(x + 0.5, y + 0.5)))
+                self.add_sprite(SpriteObject(self.game, pos=(x + 0.5, y + 0.5)))
         
     def update(self):
         self.npc_positions = {npc.map_pos for npc in self.npc_list if npc.alive}
+        self.npc_pos = (int(npc.map_pos) for npc in self.npc_list if npc.alive)
         [sprite.update() for sprite in self.sprite_list]
         [npc.update() for npc in self.npc_list]
     
